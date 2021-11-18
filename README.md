@@ -40,3 +40,31 @@ methodmeasure.log=true
 # default is false
 methodmeasure.disable=false
 ```
+
+#### 引入插件
+
+在项目的根目录下导入插件
+```
+#project build.gradle
+
+buildscript {
+    repositories {
+        mavenCentral() //引入maven central 仓库
+    }
+    dependencies {
+        //添加插件
+        classpath "io.github.wufei-limit:methodmeasure:1.0.0"
+    }
+}
+
+
+```
+#### 在指定模块启用
+在你想要使用的module 的build.gradle文件中启用
+
+```
+plugins {
+    id 'com.github.wind.methodmeasure'
+}
+
+```
