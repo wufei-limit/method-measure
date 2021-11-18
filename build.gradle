@@ -1,6 +1,7 @@
 plugins {
     id 'groovy'
     id 'maven-publish'
+    id 'signing'
 }
 repositories {
     mavenCentral()
@@ -8,23 +9,91 @@ repositories {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation 'org.ow2.asm:asm:7.0'
+    implementation 'org.ow2.asm:asm-commons:7.0'
     implementation 'com.android.tools.build:gradle:4.0.2'
 }
 
+group = 'io.github.wufei-limit'
+version = '1.0.0'
 
-publishing {
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+// 强制 Java/JavaDoc 等的编码为 UTF-8
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = "UTF-8"
+}
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+publishing  {
     publications {
         myLibrary(MavenPublication) {
             artifactId = 'methodmeasure'
-            groupId = 'com.github.wind'
-            version = '1.0'
             from components.java
+            // 打包源码
+            artifact sourcesJar
+            // javadoc
+            artifact javadocJar
+            pom {
+                name = "methodmeasure"
+                description = "A plugin use to measure time"
+                url = "https://github.com/wufei-limit/method-measure"
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "wufei"
+                        name = "wufei-limit"
+                        email = "a414850826@gmail.com"
+                    }
+                }
+                scm {
+                    connection = "scm:svn:https://github.com/wufei-limit/method-measure"
+                    developerConnection = "scm:svn:https://github.com/wufei-limit/method-measure"
+                    url = "https://github.com/wufei-limit/method-measure"
+                }
+            }
         }
     }
 
     repositories {
         maven {
-            url = layout.projectDirectory.dir("../repo")
+            name 'Release'
+            url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials{
+                username = "${OSSRH_USERNAME}"
+                password = "${OSSRH_PASSWORD}"
+            }
+        }
+        maven {
+            name 'Snapshot'
+            url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            credentials{
+                username = "${OSSRH_USERNAME}"
+                password = "${OSSRH_PASSWORD}"
+            }
         }
     }
+}
+
+signing {
+    sign publishing.publications.myLibrary
 }

@@ -17,10 +17,6 @@ public class MethodMeasureConfig {
             throw new RuntimeException("no logger set, please set logger for use");
         }
         LOG_NAME = logName.replace(".", "/");
-        String[] split = LOG_NAME.split("/");
-        if (split.length > 0){
-            MethodMeasureTransform.setLogName(split[split.length - 1]);
-        }
         System.out.println("use logger "+LOG_NAME);
     }
 

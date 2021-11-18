@@ -26,7 +26,7 @@ public class Logger {
 
     def static error(Object msg) {
         try {
-            println("${LogUI.C_ERROR.value}[HXAPM]: ${msg}${LogUI.E_NORMAL.value}")
+            println("${LogUI.C_ERROR.value}[MethodMeasure]: ${msg}${LogUI.E_NORMAL.value}")
         } catch (Exception e) {
             e.printStackTrace()
         }
@@ -34,7 +34,7 @@ public class Logger {
 
     def static warn(Object msg) {
         try {
-            println("${LogUI.C_WARN.value}[HXAPM]: ${msg}${LogUI.E_NORMAL.value}")
+            println("${LogUI.C_WARN.value}[MethodMeasure]: ${msg}${LogUI.E_NORMAL.value}")
         } catch (Exception e) {
             e.printStackTrace()
         }
@@ -46,7 +46,7 @@ public class Logger {
     def static info(Object msg) {
         if (debug)
             try {
-                println "[HXAPM]: ${msg}"
+                println "[MethodMeasure]: ${msg}"
             } catch (Exception e) {
                 e.printStackTrace()
             }

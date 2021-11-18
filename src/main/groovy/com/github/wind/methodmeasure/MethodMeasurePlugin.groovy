@@ -20,6 +20,12 @@ class MethodMeasurePlugin implements Plugin<Project> {
             def methodName = properties.getProperty("methodmeasure.logmethd", "")
             MethodMeasureConfig.setLogName(loggerName)
             MethodMeasureConfig.setMethodName(methodName)
+            String[] split = loggerName.split("\\.")
+            if (split.length > 0){
+                def index = split.length - 1
+                def realName = split[index]
+                MethodMeasureTransform.setLogName(realName)
+            }
         }
         if (disablePlugin) {
             Logger.error("已关闭method measure plugin.")
