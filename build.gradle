@@ -18,12 +18,12 @@ group = 'io.github.wufei-limit'
 version = '1.0.0'
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
@@ -90,6 +90,10 @@ publishing  {
                 username = "${OSSRH_USERNAME}"
                 password = "${OSSRH_PASSWORD}"
             }
+        }
+        maven{
+            name 'local'
+            url(layout.projectDirectory.dir("../repo"))
         }
     }
 }
