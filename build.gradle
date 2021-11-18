@@ -1,0 +1,30 @@
+plugins {
+    id 'groovy'
+    id 'maven-publish'
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'com.android.tools.build:gradle:4.0.2'
+}
+
+
+publishing {
+    publications {
+        myLibrary(MavenPublication) {
+            artifactId = 'methodmeasure'
+            groupId = 'com.github.wind'
+            version = '1.0'
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url = layout.projectDirectory.dir("../repo")
+        }
+    }
+}
